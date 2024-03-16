@@ -4,6 +4,7 @@ export function ChatList({ messages }: { messages: any[] }) {
   if (!messages.length) {
     return null;
   }
+  console.log(messages);
 
   return (
     <div className="relative mx-auto max-w-2xl px-4">

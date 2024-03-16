@@ -7,12 +7,16 @@ const exampleMessages = [
     message: "どんな情報アクセスできますか?",
   },
   {
-    heading: "What's the stock price of AAPL?",
-    message: "What's the stock price of AAPL?",
+    heading: "各自動車メーカーの販売台数（千台）を棒グラフで表示してください。",
+    message: "各自動車メーカーの販売台数（千台）を棒グラフで表示してください。",
   },
   {
-    heading: "I'd like to buy 10 shares of MSFT",
-    message: "I'd like to buy 10 shares of MSFT",
+    heading: "エンジンサイズと馬力の関係を散布図で分析してください。",
+    message: "エンジンサイズと馬力の関係を散布図で分析してください。",
+  },
+  {
+    heading: "テーブルで最初の５つのデータポイントを表示してください。",
+    message: "テーブルで最初の５つのデータポイントを表示してください。",
   },
 ];
 
@@ -25,17 +29,14 @@ export function EmptyScreen({
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8 mb-4">
         <h1 className="mb-2 text-lg font-semibold">
-          Welcome to AI SDK 3.0 Generative UI demo!
+          AI SDK 3.0 Generative UIとVector DB デモ!
         </h1>
         <p className="mb-2 leading-normal text-muted-foreground">
-          This is a demo of an interactive financial assistant. It can show you
-          stocks, tell you their prices, and even help you buy shares.
+          AI SDK 3.0 Generative UIとPG
+          VectorとOPENAIに用意たAIチャットアプリのデモ
         </p>
-        <p className="mb-2 leading-normal text-muted-foreground">
-          The demo is built with .
-        </p>
-        <p className="mb-2 leading-normal text-muted-foreground">It uses </p>
-        <p className="leading-normal text-muted-foreground">Try an example:</p>
+
+        <p className="leading-normal text-muted-foreground">使ってみよう！:</p>
         <div className="mt-4 flex flex-col items-start space-y-2 mb-4">
           {exampleMessages.map((message, index) => (
             <Button

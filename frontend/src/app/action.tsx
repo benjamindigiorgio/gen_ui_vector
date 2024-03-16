@@ -18,9 +18,16 @@ import { formatDocumentsAsString } from "langchain/util/document";
 import { BotMessage } from "@/components/ui/message";
 import { Spinner } from "@/components/ui/spinner";
 
-import { BarChart, LineChart } from "@/components/streamables";
+import {
+  BarChart,
+  LineChart,
+  ScatterChart,
+  Table,
+} from "@/components/streamables";
 import { barSchema } from "@/components/streamables/zod/bar-chart";
 import { lineSchema } from "@/components/streamables/zod/line-chart";
+import { scatterChartSchema } from "@/components/streamables/zod/scatter-chart";
+import { tableSchema } from "@/components/streamables/zod/table";
 
 const embeddings = new OpenAIEmbeddings();
 const openai = new OpenAI({
@@ -65,6 +72,8 @@ Only show a graph when asked for, you should generally opt to now show a graph u
 When showing a graph you should perform any necessary calculations and ensure that there is data being passed to the data parameter it mustn't just be a name being passed to it, it also needs some data associated with it.
 If you want to show a bar chart, call \`show_bar_chart\` make sure that you pass data to this and in the data there is a name parameter and a data parameter which has a value, this is an example of the format [{name: 'Amphibians', 'Number of threatened species': 2488,}], categories should be an array of the name of the parameter you are passing into data other than name i.e: ['Number of threatened species'].
 If you want to show a line chart, call \`show_line_chart\` make sure that you pass data to this and in the data there is a date parameter which should also be the index.
+If you want to show a scatter chart call \`show_scatter_chart\`.
+If you want to show a scatter chart call \`show_table\`.
 `;
 
 async function submitUserMessage(userInput: string) {
@@ -143,19 +152,21 @@ async function submitUserMessage(userInput: string) {
             ...aiState.get(),
             {
               role: "function",
-              name: "get_flight_info",
+              name: "show_bar_chart",
               // Content can be any string to provide context to the LLM in the rest of the conversation.
               content: JSON.stringify({ title, categories, data, index }),
             },
           ]);
 
           return (
-            <BarChart
-              title={title}
-              categories={categories}
-              data={data}
-              index={index}
-            />
+            <BotMessage>
+              <BarChart
+                title={title}
+                categories={categories}
+                data={data}
+                index={index}
+              />
+            </BotMessage>
           );
         },
       },
@@ -180,7 +191,7 @@ async function submitUserMessage(userInput: string) {
             ...aiState.get(),
             {
               role: "function",
-              name: "get_flight_info",
+              name: "show_line_chart",
               content: JSON.stringify({ title, categories, data, index }),
             },
           ]);
@@ -193,6 +204,44 @@ async function submitUserMessage(userInput: string) {
               index={index}
             />
           );
+        },
+      },
+      show_scatter_chart: {
+        description: "Show a scatter chart",
+        parameters: scatterChartSchema,
+        render: async function* (props) {
+          yield <Spinner />;
+          console.log("SCATTER", JSON.stringify(props));
+
+          aiState.done([
+            ...aiState.get(),
+            {
+              role: "function",
+              name: "show_scatter_chart",
+              content: JSON.stringify(props),
+            },
+          ]);
+
+          return <ScatterChart {...props} />;
+        },
+      },
+      show_table: {
+        description: "Show a scatter chart",
+        parameters: tableSchema,
+        render: async function* (props) {
+          yield <Spinner />;
+          console.log("Table", JSON.stringify(props));
+
+          aiState.done([
+            ...aiState.get(),
+            {
+              role: "function",
+              name: "show_table",
+              content: JSON.stringify(props),
+            },
+          ]);
+
+          return <Table {...props} />;
         },
       },
     },

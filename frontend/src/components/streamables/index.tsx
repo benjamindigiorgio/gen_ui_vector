@@ -26,4 +26,28 @@ const LineChart = dynamic(
   }
 );
 
-export { BarChart, LineChart };
+const ScatterChart = dynamic(
+  () => import("./scatter").then((mod) => mod.ScatterChartStreamable),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-zinc-900 rounded-lg px-4 py-5 text-center text-xs">
+        ロード中...
+      </div>
+    ),
+  }
+);
+
+const Table = dynamic(
+  () => import("./table").then((mod) => mod.TableStreamable),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-zinc-900 rounded-lg px-4 py-5 text-center text-xs">
+        ロード中...
+      </div>
+    ),
+  }
+);
+
+export { BarChart, LineChart, ScatterChart, Table };
